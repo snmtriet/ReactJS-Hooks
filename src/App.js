@@ -1,18 +1,19 @@
-import { useEffect, useState } from 'react';
-import './App.scss';
-import ColorBox from './components/ColorBox';
-import Pagination from './components/Pagination';
-import PostList from './components/PostList';
-import TodoForm from './components/TodoForm';
-import TodoList from './components/TodoList';
-import queryString from 'query-string';
-import PostFilterForm from './components/PostFilterForm';
+import { useEffect, useState } from "react";
+import "./App.scss";
+import ColorBox from "./components/ColorBox";
+import Pagination from "./components/Pagination";
+import PostList from "./components/PostList";
+import TodoForm from "./components/TodoForm";
+import TodoList from "./components/TodoList";
+import queryString from "query-string";
+import PostFilterForm from "./components/PostFilterForm";
+import Clock from "./components/Clock";
 
 function App() {
   const [todoList, setTodoList] = useState([
-    { id: 1, title: 'I love Easy Frontend' },
-    { id: 2, title: 'I love u 3000' },
-    { id: 3, title: 'A thousand year' },
+    { id: 1, title: "I love Easy Frontend" },
+    { id: 2, title: "I love u 3000" },
+    { id: 3, title: "A thousand year" },
   ]);
 
   const [postList, setPostList] = useState([]);
@@ -25,7 +26,7 @@ function App() {
   const [filters, setFilters] = useState({
     _limit: 10,
     _page: 1,
-    title_like: '',
+    title_like: "",
   });
 
   useEffect(() => {
@@ -41,7 +42,7 @@ function App() {
         setPostList(data);
         setPagination(pagination);
       } catch (error) {
-        console.log('Failed to fetch post list', error.message);
+        console.log("Failed to fetch post list", error.message);
       }
     }
 
@@ -53,12 +54,12 @@ function App() {
     setFilters({
       ...filters,
       _page: newPage,
-    })
+    });
   }
 
   function handleTodoClick(todo) {
     // console.log(todo);
-    const index = todoList.findIndex(x => x.id === todo.id);
+    const index = todoList.findIndex((x) => x.id === todo.id);
     if (index < 0) return;
 
     const newTodoList = [...todoList];
@@ -86,6 +87,8 @@ function App() {
     });
   }
 
+  const [showClock, setShowClock] = useState(true);
+
   return (
     <div className="app">
       <h1>ReactJS Hook Basic</h1>
@@ -100,12 +103,17 @@ function App() {
       <h1>ReactJS Hook Postlist</h1>
       <PostList posts={postList} />
 
-      <Pagination
-        pagination={pagination}
-        onPageChange={handlePageChange}
-      />
+      <Pagination pagination={pagination} onPageChange={handlePageChange} />
       <PostFilterForm onSubmit={handleFilterChange} />
 
+      <h1>ReactJS Clock</h1>
+      {showClock && <Clock />}
+      <button className="btnHideClock" onClick={() => setShowClock(false)}>
+        Hide Clock
+      </button>
+      <button className="btnHideClock" onClick={() => setShowClock(true)}>
+        Show Clock
+      </button>
     </div>
   );
 }
